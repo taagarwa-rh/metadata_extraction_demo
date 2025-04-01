@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "metadata_extraction_demo"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+authors = ["Taylor Agarwal <taagarwa@redhat.com>"]
+packages = [{include = "metadata_extraction_demo"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^1.66.5"
+pydantic = "^2.10.6"
+gradio = "^5.22.0"
+python-dotenv = "^1.0.1"
+docling = "^2.28.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1"
+pytest-cov = "^4.0.0"
+bump2version = "^1.0.1"
+ruff = "^0.11.0"
+
+
+[tool.poetry.group.mac.dependencies]
+ocrmac = "^1.0.0"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "de-cop-nexus"
+url = "https://nexus.corp.redhat.com/repository/de-cop-pypi-releases/simple/"
+priority = "supplemental"
+
+[tool.ruff]
+line-length = 140
+
+[tool.ruff.lint]
+select = ["E", "F", "D", "C", "N"]
+ignore = [
+    "E501", # line-too-long
+    "E402", # module-import-not-at-top-file
+    "D203", # one-blank-line-before-class
+    "D212", # multi-line-summary-first-line
+    "D100", # undocumented-public-module
+]
+per-file-ignores = { "tests/*" = ["D"] }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

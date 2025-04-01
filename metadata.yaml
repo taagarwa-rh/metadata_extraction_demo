@@ -1,0 +1,18 @@
+restaurant_name:
+  type: string
+menu:
+  type: array
+  items: object
+  properties:
+    item_name:
+      type: string
+    description:
+      type: string
+    price:
+      type: float
+    food_or_beverage:
+      type: enum
+      options:
+        - Food
+        - Beverage
+
