@@ -25,9 +25,11 @@ bump type:
     poetry run bump2version --current-version={{ default_version }} {{ type }}
 
 test-container: (build-image "testing-latest")
-    - podman run --rm --name metadata-extraction-demo -it metadata-extraction-demo:testing-latest /bin/bash
-
-
+    - podman run --rm -d \
+        -p 7860:7860 \
+        -e OPENAI_BASE_URL=http://host.docker.internal:11434/v1 \
+        --name metadata-extraction-demo \
+        -it metadata-extraction-demo:testing-latest
 
 
 # Deploy application to openshift - WILL BE DEPRECATED IN A FUTURE RELEASE

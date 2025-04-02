@@ -24,15 +24,6 @@ ruff = "^0.11.0"
 [tool.poetry.group.mac.dependencies]
 ocrmac = "^1.0.0"
 
-[[tool.poetry.source]]
-name = "PyPI"
-priority = "primary"
-
-[[tool.poetry.source]]
-name = "de-cop-nexus"
-url = "https://nexus.corp.redhat.com/repository/de-cop-pypi-releases/simple/"
-priority = "supplemental"
-
 [tool.ruff]
 line-length = 140
 

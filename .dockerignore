@@ -1,0 +1,13 @@
+# Ignore everything
+*
+
+# Except
+!metadata_extraction_demo
+!metadata.yaml
+!pyproject.toml
+!README.md
+!Sample_Menu.pdf
+!Instructions.md
+
+# But still ignore
+__pycache__
