@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 INSTRUCTIONS = (DIRECTORY_PATH / "Instructions.md").read_text().strip()
 DEFAULT_METADATA = (DIRECTORY_PATH / "metadata.yaml").read_text().strip()
 DEFAULT_METADATA_NUM_LINES = len(DEFAULT_METADATA.splitlines())
-DEFAULT_PDF_PATH = str(DIRECTORY_PATH / "Sample_Menu.pdf")
+DEFAULT_PDF_PATH = str(DIRECTORY_PATH / "Sample_Contract.pdf")
 DEFAULT_MODELS = get_models()
 AVAILABLE_OCR_METHODS = ["Local", "VLM"]
 AVAILABLE_OCR_METHODS += ["Server"] if DOCLING_BASE_URL is not None else []
@@ -50,7 +50,9 @@ with gr.Blocks(theme=theme) as demo:
                     label="Metadata Structure",
                     language="yaml",
                     interactive=True,
+                    max_lines=20,
                     value=DEFAULT_METADATA,
+                    container=False
                 )
                 extract_button = gr.Button("Extract Metadata", variant="primary")
             with gr.Column():
