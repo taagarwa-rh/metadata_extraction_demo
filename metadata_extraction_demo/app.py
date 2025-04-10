@@ -21,13 +21,14 @@ AVAILABLE_OCR_METHODS = ["Local", "VLM"]
 AVAILABLE_OCR_METHODS += ["Server"] if DOCLING_BASE_URL is not None else []
 
 
-def process_pdf(pdf_file, llm_name: str, method: str, force_full_page_ocr: str, yaml_string: str):
+def process_pdf(pdf_file, llm_name: str, method: str, system_prompt: str, force_full_page_ocr: str, yaml_string: str):
     """Process the PDF."""
     response_format = build_model_from_yaml(yaml_string)
     logger.info("Converting PDF to text")
     pdf_text = convert_pdf_to_text(pdf_path=pdf_file, method=method.lower(), force_full_page_ocr=force_full_page_ocr == "Yes")
     logger.info("Converting text to metadata")
-    metadata = text_to_metadata(text=pdf_text, model=llm_name, response_format=response_format, temperature=0, seed=42)
+    system_messages = [{"role": "system", "content": system_prompt}] if system_prompt else []
+    metadata = text_to_metadata(text=pdf_text, model=llm_name, response_format=response_format, system_messages=system_messages, temperature=0, seed=42)
     logger.info("DONE")
     return metadata.model_dump_json(indent=2), pdf_text
 
@@ -55,7 +56,7 @@ with gr.Blocks(theme=theme) as demo:
             force_full_page_ocr = gr.Radio(label="Default Force Full Page OCR?", choices=["Yes", "No"], value="No")
         with gr.Row(equal_height=True):
             with gr.Column():
-                system_prompt = gr.TextArea(label="System Prompt", value="", interactive=True, lines=20, max_lines=20)
+                system_prompt = gr.TextArea(label="System Prompt (Optional)", value="", interactive=True, lines=20, max_lines=20)
             with gr.Column():
                 metadata_structure = gr.Code(
                     label="Metadata Structure",
@@ -66,7 +67,7 @@ with gr.Blocks(theme=theme) as demo:
                     container=False
                 )
     with gr.Tab("Metadata Extractor"):
-        extract_button = gr.Button("Extract Metadata", variant="primary")
+        extract_button = gr.Button("Extract Text + Metadata", variant="primary")
         with gr.Row(equal_height=True):
             with gr.Column():
                 extracted_text = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750)
@@ -76,7 +77,7 @@ with gr.Blocks(theme=theme) as demo:
     pdf_file.change(fn=view_pdf, inputs=[pdf_file], outputs=[pdf_viewer])
     extract_button.click(
         fn=process_pdf,
-        inputs=[pdf_file, llm, ocr_method, force_full_page_ocr, metadata_structure],
+        inputs=[pdf_file, llm, ocr_method, system_prompt, force_full_page_ocr, metadata_structure],
         outputs=[extracted_metadata, extracted_text],
     )
 
