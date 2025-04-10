@@ -16,6 +16,7 @@ pdf2image = "^1.17.0"
 docling-core = "^2.25.0"
 docling = "^2.7.0"
 gradio-pdf = "^0.0.22"
+pypdf2 = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1"
