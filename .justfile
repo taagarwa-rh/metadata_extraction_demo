@@ -9,16 +9,16 @@ pre-mr: format lint
 
 # Formats Code
 format:
-    poetry run ruff check --select I --fix metadata_extraction_demo tests 
-    poetry run ruff format metadata_extraction_demo tests 
+    poetry run ruff check --select I --fix metadata_extraction_demo 
+    poetry run ruff format metadata_extraction_demo 
 
 # Tests Code
-test *options:
-    poetry run pytest -s tests/ {{ options }}
+# test *options:
+#     poetry run pytest -s tests/ {{ options }}
 
 # Lints Code
 lint *options:
-    poetry run ruff check metadata_extraction_demo tests  {{ options }}
+    poetry run ruff check metadata_extraction_demo  {{ options }}
 
 # Increments the code version
 bump type:
