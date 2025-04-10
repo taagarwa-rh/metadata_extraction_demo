@@ -5,28 +5,21 @@ from docling.datamodel.pipeline_options import EasyOcrOptions, PdfPipelineOption
 from docling.document_converter import DocumentConverter, PdfFormatOption
 from docling_core.types.doc.document import DoclingDocument
 
-from metadata_extraction_demo.constants import DEVICE
 from metadata_extraction_demo.converters.base import Converter
-
-
-def has_ocrmac():
-    """Check if the system has ocrmac installed."""
-    try:
-        import ocrmac  # noqa: F401
-
-        return True
-    except ImportError:
-        return False
 
 
 class DoclingLocalConverter(Converter):
     """Docling converter using local docling package."""
 
-    def __init__(self, ocr_options: dict):
+    def __init__(self, ocr_engine: str, ocr_options: dict = {}):
         """Initialize."""
-        self.converter: DocumentConverter = self.create_document_converter(ocr_options=ocr_options)
+        self.ocr_engine = ocr_engine
+        self.ocr_options = ocr_options
+        self.converter: DocumentConverter = self.create_document_converter(ocr_engine=self.ocr_engine, ocr_options=self.ocr_options)
 
-    def create_document_converter(self, ocr_options: dict = {}, allowed_formats: list[InputFormat] = None) -> DocumentConverter:
+    def create_document_converter(
+        self, ocr_engine: str, ocr_options: dict = {}, allowed_formats: list[InputFormat] = None
+    ) -> DocumentConverter:
         """Create docling document converter."""
         # Set default pipeline options
         pipeline_options = PdfPipelineOptions()
@@ -35,12 +28,15 @@ class DoclingLocalConverter(Converter):
         pipeline_options.table_structure_options.do_cell_matching = True
 
         # Add OCR Options
-        if DEVICE == "mps" and has_ocrmac():
+        if ocr_engine == "ocrmac":
             from docling.datamodel.pipeline_options import OcrMacOptions
 
             ocr_options_ = OcrMacOptions(**ocr_options)
-        else:
+        elif ocr_engine == "easyocr":
             ocr_options_ = EasyOcrOptions(**ocr_options)
+        else:
+            raise ValueError(f"Unsupported OCR engine: {ocr_engine}")
+
         pipeline_options.ocr_options = ocr_options_
 
         # Create converter

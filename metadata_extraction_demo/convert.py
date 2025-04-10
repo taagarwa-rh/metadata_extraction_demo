@@ -10,9 +10,14 @@ def convert_pdf_to_docling(pdf_path: str, method: str, force_full_page_ocr: bool
     """Convert a PDF to a docling document."""
     path = Path(pdf_path)
 
-    if method == "local":
+    if method == "easyocr":
         ocr_options = {"force_full_page_ocr": force_full_page_ocr}
-        converter = DoclingLocalConverter(ocr_options=ocr_options)
+        converter = DoclingLocalConverter(ocr_engine="easyocr", ocr_options=ocr_options)
+        docling = converter.convert_to_docling(path)
+
+    elif method == "ocrmac":
+        ocr_options = {"force_full_page_ocr": force_full_page_ocr}
+        converter = DoclingLocalConverter(ocr_engine="ocrmac", ocr_options=ocr_options)
         docling = converter.convert_to_docling(path)
 
     elif method == "server":
