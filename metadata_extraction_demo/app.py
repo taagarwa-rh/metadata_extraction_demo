@@ -1,6 +1,7 @@
 import logging
 
 import gradio as gr
+from gradio_pdf import PDF
 
 from metadata_extraction_demo.constants import DIRECTORY_PATH, DOCLING_BASE_URL
 from metadata_extraction_demo.convert import convert_pdf_to_text
@@ -30,6 +31,9 @@ def process_pdf(pdf_file, llm_name: str, method: str, force_full_page_ocr: str, 
     logger.info("DONE")
     return metadata.model_dump_json(indent=2), pdf_text
 
+def view_pdf(pdf_file):
+    """View the PDF."""
+    return PDF(value=pdf_file)
 
 theme = gr.themes.Base(
     primary_hue="red",
@@ -38,31 +42,38 @@ theme = gr.themes.Base(
 with gr.Blocks(theme=theme) as demo:
     gr.Markdown("# Metadata Extraction Demo")
     gr.Markdown("Extract structured data from a PDF using AI.")
-    with gr.Tab("Metadata Extractor"):
+    with gr.Tab("Instructions"):
+        gr.Markdown(INSTRUCTIONS)
+    with gr.Tab("Upload PDF"):
+        with gr.Column():
+            pdf_file = gr.File(label="Upload PDF", file_types=[".pdf"], file_count="single", value=DEFAULT_PDF_PATH)
+            pdf_viewer = PDF(label="PDF Preview", value=DEFAULT_PDF_PATH)
+    with gr.Tab("Configuration"):
         with gr.Row():
-            llm = gr.Dropdown(label="Metadata Extraction Model", choices=DEFAULT_MODELS, interactive=True)
-            ocr_method = gr.Radio(label="OCR Method", choices=AVAILABLE_OCR_METHODS, value="Local", interactive=True)
-            force_full_page_ocr = gr.Radio(label="Force Full Page OCR?", choices=["Yes", "No"], value="No")
+            llm = gr.Dropdown(label="Default Extraction Model", choices=DEFAULT_MODELS, interactive=True)
+            ocr_method = gr.Radio(label="Default OCR Method", choices=AVAILABLE_OCR_METHODS, value="Local", interactive=True)
+            force_full_page_ocr = gr.Radio(label="Default Force Full Page OCR?", choices=["Yes", "No"], value="No")
         with gr.Row(equal_height=True):
             with gr.Column():
-                pdf_file = gr.File(label="Upload PDF", file_types=[".pdf"], file_count="single", value=DEFAULT_PDF_PATH)
+                system_prompt = gr.TextArea(label="System Prompt", value="", interactive=True, lines=20, max_lines=20)
+            with gr.Column():
                 metadata_structure = gr.Code(
                     label="Metadata Structure",
                     language="yaml",
                     interactive=True,
-                    max_lines=20,
+                    max_lines=25,
                     value=DEFAULT_METADATA,
                     container=False
                 )
-                extract_button = gr.Button("Extract Metadata", variant="primary")
+    with gr.Tab("Metadata Extractor"):
+        extract_button = gr.Button("Extract Metadata", variant="primary")
+        with gr.Row(equal_height=True):
             with gr.Column():
-                extracted_metadata = gr.TextArea(label="Extracted Metadata", lines=25, max_lines=25)
-    with gr.Tab("View Extracted Text"):
-        gr.Markdown("The extracted text from the PDF will appear below this line after extracting the metadata\n\n---")
-        extracted_text = gr.Markdown()
-    with gr.Tab("Instructions"):
-        gr.Markdown(INSTRUCTIONS)
-
+                extracted_text = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750)
+            with gr.Column():
+                extracted_metadata = gr.Code(label="Extracted Metadata", language="json", wrap_lines=True)
+    
+    pdf_file.change(fn=view_pdf, inputs=[pdf_file], outputs=[pdf_viewer])
     extract_button.click(
         fn=process_pdf,
         inputs=[pdf_file, llm, ocr_method, force_full_page_ocr, metadata_structure],

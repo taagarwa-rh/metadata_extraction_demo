@@ -1185,6 +1185,23 @@ typing-extensions = ">=4.0,<5.0"
 websockets = ">=10.0,<16.0"
 
 [[package]]
+name = "gradio-pdf"
+version = "0.0.22"
+description = "Easily display PDFs in Gradio"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "gradio_pdf-0.0.22-py3-none-any.whl", hash = "sha256:6f710eca3464d2d37aee742eb2f10dbe76772ebe5dfcfb993da40c710c9ad1b5"},
+]
+
+[package.dependencies]
+gradio = ">=4.0,<6.0"
+
+[package.extras]
+dev = ["build", "twine"]
+
+[[package]]
 name = "groovy"
 version = "0.1.2"
 description = "A small Python library created to help developers protect their applications from Server Side Request Forgery (SSRF) attacks."
@@ -2461,8 +2478,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.23.5", markers = "python_version >= \"3.11\""},
     {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+    {version = ">=1.23.5", markers = "python_version == \"3.11\""},
 ]
 
 [[package]]
@@ -2484,8 +2501,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.23.5", markers = "python_version >= \"3.11\""},
     {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+    {version = ">=1.23.5", markers = "python_version >= \"3.11\""},
 ]
 
 [[package]]
@@ -2658,8 +2675,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
     {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -5301,4 +5318,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "dbdb024f816047a0691e4a6b817577abdb26a8a92a4c07f3b29b041ccc8746ee"
+content-hash = "db2ffa21bb8c91a58f78a25d0406ef67ed8642676cbd61e51d2de38b3cfb6a9a"
