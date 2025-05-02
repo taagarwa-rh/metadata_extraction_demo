@@ -126,7 +126,7 @@ type_mapper = {
 }
 
 
-def build_model_from_dict(d: str, model_name: str) -> BaseModel:
+def build_model_from_dict(d: dict, model_name: str) -> BaseModel:
     """Build a Pydantic model from a dictionary."""
     model = {}
     for attribute in d:

@@ -26,3 +26,13 @@ def get_models():
     response = client.models.list()
     models = [model.id for model in response.data]
     return sorted(models)
+
+
+def has_ocrmac():
+    """Check if the system has ocrmac installed."""
+    try:
+        import ocrmac  # noqa: F401
+
+        return True
+    except ImportError:
+        return False

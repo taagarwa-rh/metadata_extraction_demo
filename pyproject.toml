@@ -12,7 +12,11 @@ openai = "^1.66.5"
 pydantic = "^2.10.6"
 gradio = "^5.22.0"
 python-dotenv = "^1.0.1"
-docling = "^2.28.0"
+pdf2image = "^1.17.0"
+docling-core = "^2.25.0"
+docling = "^2.7.0"
+gradio-pdf = "^0.0.22"
+pypdf2 = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1"
@@ -23,6 +27,7 @@ ruff = "^0.11.0"
 
 [tool.poetry.group.mac.dependencies]
 ocrmac = "^1.0.0"
+mlx-vlm = "^0.1.21"
 
 [tool.ruff]
 line-length = 140

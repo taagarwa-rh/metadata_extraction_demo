@@ -1,18 +1,56 @@
-restaurant_name:
+party_name: 
   type: string
-menu:
-  type: array
-  items: object
+counterparty_name: 
+  type: string
+creation_date:
+  type: object
   properties:
-    item_name:
-      type: string
-    description:
-      type: string
-    price:
-      type: float
-    food_or_beverage:
-      type: enum
-      options:
-        - Food
-        - Beverage
-
+    year:
+      type: int
+    month:
+      type: int
+    day:
+      type: int
+effective_date: 
+  type: object
+  properties:
+    year:
+      type: int
+    month:
+      type: int
+    day:
+      type: int
+contract_type: 
+  type: enum
+  options:
+    - Addendum
+    - Amendment
+    - Appendix
+    - Attachment
+    - Change Order
+    - Data Processing Agreement (DPA)
+    - Data Processing Agreement (DPA For Master Purchase Agreement)
+    - Data Processing Agreement (DPA For Master Subcontract Agreement)
+    - Engagement Letter
+    - Exhibit
+    - Hotel Agreement
+    - Insurance Agreement (Health, Life, Medical Services)
+    - Lease – MSO
+    - Lease – Traditional
+    - Letter of Intent
+    - License
+    - Master Purchase Agreement (MPA)
+    - Master Service Agreement (MSA)
+    - Master Subcontract Agreement
+    - Memorandum of Understanding
+    - Non-Disclosure Agreement (NDA)
+    - Novation Agreement
+    - Order Form
+    - Other
+    - Proposal
+    - Quote
+    - Service Level Agreement
+    - Sponsorship Agreement
+    - Statement of Work
+    - Supplemental Document
+    - Terms and Conditions
