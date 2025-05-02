@@ -1,8 +1,8 @@
 import logging
+from difflib import Differ
 
 import gradio as gr
 from gradio_pdf import PDF
-from difflib import Differ
 
 from metadata_extraction_demo.constants import DIRECTORY_PATH, DOCLING_BASE_URL
 from metadata_extraction_demo.convert import convert_pdf_to_text
@@ -39,17 +39,23 @@ def process_pdf(pdf_file, llm_name: str, method: str, system_prompt: str, force_
 
 
 def compare_ocr_methods(pdf_file, method_1: str, method_2: str, force_full_page_ocr_1: str, force_full_page_ocr_2: str):
+    """Compare two ocr methods."""
     logger.info("Converting PDF to text")
     pdf_text_1 = convert_pdf_to_text(pdf_path=pdf_file, method=method_1.lower(), force_full_page_ocr=force_full_page_ocr_1 == "Yes")
     pdf_text_2 = convert_pdf_to_text(pdf_path=pdf_file, method=method_2.lower(), force_full_page_ocr=force_full_page_ocr_2 == "Yes")
     return pdf_text_1, pdf_text_2, gr.HighlightedText(visible=False)
 
-def make_diffs(pdf_text_1, pdf_text_2):
+
+def make_diffs(pdf_text_1: str, pdf_text_2: str):
+    """Create a view of diffs between two strings."""
     logger.info("Making diffs")
     d = Differ()
     diffs_12 = [(token[2:], token[0] if token[0] != " " else None) for token in d.compare(pdf_text_1, pdf_text_2)]
-    highlighted_text_12 = gr.HighlightedText(value=diffs_12, label="Diff", combine_adjacent=True, show_legend=True, color_map={"+": "blue", "-": "green"}, visible=True)
+    highlighted_text_12 = gr.HighlightedText(
+        value=diffs_12, label="Diff", combine_adjacent=True, show_legend=True, color_map={"+": "blue", "-": "green"}, visible=True
+    )
     return highlighted_text_12
+
 
 def view_pdf(pdf_file):
     """View the PDF."""
@@ -76,7 +82,11 @@ with gr.Blocks(theme=theme) as demo:
             force_full_page_ocr = gr.Radio(label="Force Full Page OCR?", choices=["Yes", "No"], value="No")
         with gr.Row(equal_height=True):
             metadata_structure = gr.Code(
-                label="Metadata Structure", language="yaml", interactive=True, value=DEFAULT_METADATA, max_lines=25,
+                label="Metadata Structure",
+                language="yaml",
+                interactive=True,
+                value=DEFAULT_METADATA,
+                max_lines=25,
             )
             system_prompt = gr.TextArea(label="System Prompt (Optional)", value="", interactive=True)
     with gr.Tab("Metadata Extractor"):
@@ -84,7 +94,7 @@ with gr.Blocks(theme=theme) as demo:
         with gr.Row(equal_height=True):
             extracted_text = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True)
             extracted_metadata = gr.Code(label="Extracted Metadata", language="json", wrap_lines=True)
-                
+
     with gr.Tab("Compare OCR Methods"):
         with gr.Row(equal_height=True):
             with gr.Column():
@@ -97,9 +107,13 @@ with gr.Blocks(theme=theme) as demo:
             compare_ocr_button = gr.Button("Extract Text", variant="primary")
         with gr.Row(height=750, equal_height=True):
             with gr.Column():
-                extracted_text_1 = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True)
+                extracted_text_1 = gr.Markdown(
+                    label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True
+                )
             with gr.Column():
-                extracted_text_2 = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True)
+                extracted_text_2 = gr.Markdown(
+                    label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True
+                )
         with gr.Row():
             show_diffs_button = gr.Button("Show Differences", variant="secondary")
         with gr.Row():

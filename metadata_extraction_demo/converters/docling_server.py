@@ -1,10 +1,10 @@
 from base64 import b64encode
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import requests
-from docling_core.types.doc.document import DocTagsDocument, DoclingDocument
+from docling_core.types.doc.document import DoclingDocument, DocTagsDocument
 from PyPDF2 import PdfReader, PdfWriter
-from tempfile import NamedTemporaryFile
 
 from metadata_extraction_demo.converters.base import Converter
 from metadata_extraction_demo.converters.utils import convert_pdf_to_images
@@ -22,16 +22,16 @@ class DoclingServerConverter(Converter):
     def convert_to_docling(self, path: Path) -> DocTagsDocument:
         """Convert a PDF to markdown using the Docling server."""
         # Convert file to bytes
-        pdf_obj = open(path, 'rb')
+        pdf_obj = open(path, "rb")
         pdf = PdfReader(pdf_obj)
         all_doctags = []
         for page in pdf.pages:
             page_pdf = PdfWriter()
-            page_pdf.add_page(page) 
+            page_pdf.add_page(page)
             tmp = NamedTemporaryFile(suffix=".pdf")
             with open(tmp.name, "wb") as f:
                 page_pdf.write(f)
-                
+
             # Convert bytes to base64 string
             with open(tmp.name, "rb") as f:
                 b64_encoded_bytes = b64encode(f.read()).decode()
@@ -55,15 +55,17 @@ class DoclingServerConverter(Converter):
         # Create the doctags document
         images = convert_pdf_to_images(path=path)
         doctags_doc = DocTagsDocument.from_doctags_and_image_pairs(all_doctags, images)
-        
+
         # Create a docling document
         docling = DoclingDocument(name="SampleDocument")
         docling.load_from_doctags(doctags_doc)
-        
+
         return docling
+
 
 if __name__ == "__main__":
     from metadata_extraction_demo.constants import DOCLING_API_KEY, DOCLING_BASE_URL
+
     path = Path("Sample_Contract.pdf")
     addtl_ocr_options = {"force_ocr": True, "image_export_mode": "placeholder"}
     converter = DoclingServerConverter(
