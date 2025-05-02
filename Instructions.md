@@ -6,16 +6,21 @@ If the uploaded PDF is too large to fit entirely within the context window of yo
 
 ## Usage
 
-1. Select a model from the dropdown. If you're connected to vLLM, there may only be one option here
-2. (Optional) Enable Force Full Page OCR to extract text using only OCR. If you notice there is information missing in the output, try enabling this setting.
-3. To run the demo:
-   1. Simply click the "Extract Metadata" button.
-   2. You can play around with different models and different metadata structures and see how the outputs are affected.
-4. To run your own PDF:
-   1. Click the "X" button in the Upload PDF window
-   2. Click "Click to Upload" and browse for your PDF file.
-   3. Clear the Metadata Structure field and write your own metadata structure following the schema below.
-   4. Click the "Extract Metadata" button and review the extracted metadata.
+1. On the **Upload PDF** Tab, you can upload a PDF by clicking the "X" in the Upload PDF widget. Review your PDF and confirm that everything looks ok.
+2. In the **Configuration** Tab, you can configure your extraction models and methods.
+   - Extraction Model: LLM to use for metadata extraction. If you're connected to vLLM, there may only be one option here.
+   - OCR Method: OCR method to use in Docling to extract text from the PDF.
+     - EasyOCR: Extract using the EasyOCR method. Fastest and fewest resources needed.
+     - VLM: Extract using `ds4sd/SmolDocling-256M-preview` (or `ds4sd/SmolDocling-256M-preview-mlx-bf16` on Silicon) vision language model
+     - OCRMac: Extract using OCRMac. Slower but more accurate than EasyOCR. Available on Silicon only.
+     - Server: Extract using a Docling Server. Available only if you've configured a Docling server.
+   - Force Full Page OCR: Force OCR on the full page. If not enabled, OCR will only be used in areas where the text is not encoded in the PDF. Only affects EasyOCR and OCRMac methods
+3. Specify an optional system prompt. You can use this space to instruct the LLM on its task and what the fields mean to improve the accuracy of results.
+4. Specify your metadata structure. See the [Metadata Structure Schema](#metadata-structure-schema) section below for more information on this format.
+5. Once this is all configured, you can now extract the text from your document!
+6. Go to the **Metadata Extractor** tab and click the "Extract Text + Metadata" button. After a minute or so, the text and extracted metadata will be displayed!
+
+Additionally, you can use the **Compare OCR Methods** tab to extract text from the document using different Docling OCR methods and compare the results side by side.
 
 ## Metadata Structure Schema
 

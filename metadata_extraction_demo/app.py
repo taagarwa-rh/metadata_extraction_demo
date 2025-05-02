@@ -71,23 +71,19 @@ with gr.Blocks(theme=theme) as demo:
             pdf_viewer = PDF(label="PDF Preview", value=DEFAULT_PDF_PATH)
     with gr.Tab("Configuration"):
         with gr.Row():
-            llm = gr.Dropdown(label="Default Extraction Model", choices=DEFAULT_MODELS, interactive=True)
-            ocr_method = gr.Radio(label="Default OCR Method", choices=AVAILABLE_OCR_METHODS, value="EasyOCR", interactive=True)
-            force_full_page_ocr = gr.Radio(label="Default Force Full Page OCR?", choices=["Yes", "No"], value="No")
+            llm = gr.Dropdown(label="Extraction Model", choices=DEFAULT_MODELS, interactive=True)
+            ocr_method = gr.Radio(label="OCR Method", choices=AVAILABLE_OCR_METHODS, value="EasyOCR", interactive=True)
+            force_full_page_ocr = gr.Radio(label="Force Full Page OCR?", choices=["Yes", "No"], value="No")
         with gr.Row(equal_height=True):
-            with gr.Column():
-                system_prompt = gr.TextArea(label="System Prompt (Optional)", value="", interactive=True, lines=20, max_lines=20)
-            with gr.Column():
-                metadata_structure = gr.Code(
-                    label="Metadata Structure", language="yaml", interactive=True, max_lines=25, value=DEFAULT_METADATA, container=False
-                )
+            metadata_structure = gr.Code(
+                label="Metadata Structure", language="yaml", interactive=True, value=DEFAULT_METADATA, max_lines=25,
+            )
+            system_prompt = gr.TextArea(label="System Prompt (Optional)", value="", interactive=True)
     with gr.Tab("Metadata Extractor"):
         extract_button = gr.Button("Extract Text + Metadata", variant="primary")
         with gr.Row(equal_height=True):
-            with gr.Column():
-                extracted_text = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True)
-            with gr.Column():
-                extracted_metadata = gr.Code(label="Extracted Metadata", language="json", wrap_lines=True)
+            extracted_text = gr.Markdown(label="Extracted Text", show_label=True, container=True, max_height=750, show_copy_button=True)
+            extracted_metadata = gr.Code(label="Extracted Metadata", language="json", wrap_lines=True)
                 
     with gr.Tab("Compare OCR Methods"):
         with gr.Row(equal_height=True):

@@ -67,7 +67,7 @@ To begin working on this project:
 
 To start the demo locally, run:
 ```sh
-poetry run gradio metadata_extraction_demo/gradio.py
+poetry run gradio metadata_extraction_demo/app.py
 ```
 
 You can access the application at [http://localhost:7860](http://localhost:7860).
