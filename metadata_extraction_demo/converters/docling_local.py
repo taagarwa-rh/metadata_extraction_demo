@@ -1,14 +1,14 @@
+import logging
 from pathlib import Path
 from typing import Literal
-import logging
 
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import (
     EasyOcrOptions,
     PdfPipelineOptions,
+    VlmPipelineOptions,
     smoldocling_vlm_conversion_options,
     smoldocling_vlm_mlx_conversion_options,
-    VlmPipelineOptions,
 )
 from docling.document_converter import DocumentConverter, PdfFormatOption
 from docling.pipeline.standard_pdf_pipeline import StandardPdfPipeline
@@ -18,6 +18,7 @@ from docling_core.types.doc.document import DoclingDocument
 from metadata_extraction_demo.converters.base import Converter
 
 logger = logging.getLogger(__name__)
+
 
 def is_mlx():
     """Check if mlx-vlm is available."""
