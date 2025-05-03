@@ -3,30 +3,21 @@ from pathlib import Path
 from docling_core.types.doc.document import DoclingDocument, DocTagsDocument
 
 from metadata_extraction_demo.constants import DOCLING_API_KEY, DOCLING_BASE_URL
-from metadata_extraction_demo.converters import DoclingLocalConverter, DoclingServerConverter, DoclingVLMConverter
+from metadata_extraction_demo.converters import DoclingLocalConverter, DoclingServerConverter
 
 
 def convert_pdf_to_docling(pdf_path: str, method: str, force_full_page_ocr: bool = False) -> DoclingDocument | DocTagsDocument | None:
     """Convert a PDF to a docling document."""
     path = Path(pdf_path)
 
-    if method == "easyocr":
-        ocr_options = {"force_full_page_ocr": force_full_page_ocr}
-        converter = DoclingLocalConverter(ocr_engine="easyocr", ocr_options=ocr_options)
-        docling = converter.convert_to_docling(path)
-
-    elif method == "ocrmac":
-        ocr_options = {"force_full_page_ocr": force_full_page_ocr}
-        converter = DoclingLocalConverter(ocr_engine="ocrmac", ocr_options=ocr_options)
-        docling = converter.convert_to_docling(path)
-
-    elif method == "server":
+    if method == "server":
         addtl_ocr_options = {"force_ocr": force_full_page_ocr, "image_export_mode": "placeholder"}
         converter = DoclingServerConverter(base_url=DOCLING_BASE_URL, api_key=DOCLING_API_KEY, addtl_ocr_options=addtl_ocr_options)
         docling = converter.convert_to_docling(path)
 
-    elif method == "vlm":
-        converter = DoclingVLMConverter()
+    elif method in ["easyocr", "ocrmac", "vlm"]:
+        ocr_options = {"force_full_page_ocr": force_full_page_ocr}
+        converter = DoclingLocalConverter(ocr_engine=method, ocr_options=ocr_options)
         docling = converter.convert_to_docling(path)
 
     else:
