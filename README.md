@@ -6,6 +6,7 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
 
 - [Metadata Extraction Demo](#metadata-extraction-demo)
   - [Table of Contents](#table-of-contents)
+  - [Features](#features)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Initial Steps](#initial-steps)
@@ -14,6 +15,21 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
       - [Option 3. Setup With Remote LLM and Remote Docling (LLMaaS)](#option-3-setup-with-remote-llm-and-remote-docling-llmaas)
   - [Run the Demo Locally](#run-the-demo-locally)
   - [Run the Demo with Docker/Podman](#run-the-demo-with-dockerpodman)
+
+
+## Features
+
+**Bring Your Own PDF**
+![](./docs/images/upload_pdf.png)
+
+**Specify Your Models and Structure**
+![](./docs/images/configuration.png)
+
+**Get Extracted Markdown and Metadata**
+![](./docs/images/metadata_extractor.png)
+
+**Compare OCR Methods**
+![](./docs/images/compare_ocr.png)
 
 
 ## Getting Started
