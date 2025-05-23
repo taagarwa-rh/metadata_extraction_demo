@@ -5,9 +5,9 @@ import gradio as gr
 from gradio_pdf import PDF
 
 from metadata_extraction_demo.constants import DIRECTORY_PATH, DOCLING_BASE_URL
-from metadata_extraction_demo.convert import convert_pdf_to_text
-from metadata_extraction_demo.metadata_tagger import build_model_from_yaml, text_to_metadata
-from metadata_extraction_demo.utils import get_models, has_ocrmac
+from metadata_extraction_demo.convert import build_document_converter, convert_pdf_to_text
+from metadata_extraction_demo.pipeline import MetadataExtractionPipeline
+from metadata_extraction_demo.utils import build_model_from_yaml, get_models, has_ocrmac
 
 logfile = DIRECTORY_PATH / "logfile.txt"
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 INSTRUCTIONS = (DIRECTORY_PATH / "Instructions.md").read_text().strip()
 DEFAULT_METADATA = (DIRECTORY_PATH / "metadata.yaml").read_text().strip()
-DEFAULT_METADATA_NUM_LINES = len(DEFAULT_METADATA.splitlines())
 DEFAULT_PDF_PATH = str(DIRECTORY_PATH / "Sample_Contract.pdf")
 DEFAULT_MODELS = get_models()
 AVAILABLE_OCR_METHODS = ["EasyOCR"]
@@ -26,15 +25,11 @@ AVAILABLE_OCR_METHODS += ["VLM"]
 
 def process_pdf(pdf_file, llm_name: str, method: str, system_prompt: str, force_full_page_ocr: str, yaml_string: str):
     """Process the PDF."""
+    method_ = method.lower()
+    converter = build_document_converter(method=method_, force_full_page_ocr=force_full_page_ocr)
     response_format = build_model_from_yaml(yaml_string)
-    logger.info("Converting PDF to text")
-    pdf_text = convert_pdf_to_text(pdf_path=pdf_file, method=method.lower(), force_full_page_ocr=force_full_page_ocr == "Yes")
-    logger.info("Converting text to metadata")
-    system_messages = [{"role": "system", "content": system_prompt}] if system_prompt else []
-    metadata = text_to_metadata(
-        text=pdf_text, model=llm_name, response_format=response_format, system_messages=system_messages, temperature=0, seed=42
-    )
-    logger.info("DONE")
+    pipe = MetadataExtractionPipeline(converter=converter, model=llm_name, response_format=response_format, system_prompt=system_prompt)
+    metadata, pdf_text = pipe.extract(pdf_file)
     return metadata.model_dump_json(indent=2), pdf_text
 
 
