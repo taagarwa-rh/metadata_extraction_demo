@@ -11,8 +11,7 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
     - [Prerequisites](#prerequisites)
     - [Initial Steps](#initial-steps)
       - [Option 1. Entirely Local Setup](#option-1-entirely-local-setup)
-      - [Option 2. Setup With Remote LLM](#option-2-setup-with-remote-llm)
-      - [Option 3. Setup With Remote LLM and Remote Docling (LLMaaS)](#option-3-setup-with-remote-llm-and-remote-docling-llmaas)
+      - [Option 2. Setup With Remote LLM (vLLM, OpenAI, etc.) and/or Docling Server](#option-2-setup-with-remote-llm-vllm-openai-etc-andor-docling-server)
   - [Run the Demo Locally](#run-the-demo-locally)
   - [Run the Demo with Docker/Podman](#run-the-demo-with-dockerpodman)
 
@@ -54,27 +53,24 @@ To begin working on this project:
    1. If running on Mac, you can install optional dependencies for Mac with `poetry install --only main,mac`
 2. Install [Ollama](https://ollama.com/)
 3. Pull a model, e.g. `ollama pull qwen2.5`
+4. Add/replace the following environment variables in `.env`:
+    ```
+    OPENAI_BASE_URL="http://localhost:11434/v1"
+    OPENAI_API_KEY="NONE"
+    ```
 
-#### Option 2. Setup With Remote LLM
+#### Option 2. Setup With Remote LLM (vLLM, OpenAI, etc.) and/or Docling Server
 
 1. Install the project dependencies `poetry install --only main`
    1. If running on Mac, you can install optional dependencies for Mac with `poetry install --only main,mac`
 2. Add/replace the following environment variables in `.env`:
-    ```bash
-    OPENAI_BASE_URL="https://your.example-llm-url.com/v1"
-    OPENAI_API_KEY="<KEY>"
-    OPENAI_IGNORE_SSL=False # Optional: Disable SSL verification for remote server
     ```
-
-#### Option 3. Setup With Remote LLM and Remote Docling (LLMaaS)
-
-1. Install the project dependencies `poetry install --only main`
-2. (Optional) Sign up for API keys for Docling and an LLM from [LLMaaS](https://maas.apps.prod.rhoai.rh-aiservices-bu.com/)
-3. Add/replace the following environment variables in `.env`:
-    ```bash
-    OPENAI_BASE_URL="https://your.example-llm-url.com/v1"
+    # Remote LLM
+    OPENAI_BASE_URL="https://your.example-llm-url.com/v1" # Remove if using OpenAI
     OPENAI_API_KEY="<KEY>"
+    # OPENAI_IGNORE_SSL=True # Optional: Disable SSL verification for remote server
 
+    # (Optional) Remote Docling Server
     DOCLING_BASE_URL="https://your.example-docling-url.com"
     DOCLING_API_KEY="<KEY>"
     ```
