@@ -5,8 +5,9 @@
 !metadata_extraction_demo
 !metadata.yaml
 !pyproject.toml
+!uv.lock
 !README.md
-!Sample_Menu.pdf
+!Sample_Contract.pdf
 !Instructions.md
 
 # But still ignore
