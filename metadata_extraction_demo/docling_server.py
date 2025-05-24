@@ -3,14 +3,23 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import requests
+from docling.datamodel.base_models import ConversionStatus
+from docling.document_converter import DocumentConverter
 from docling_core.types.doc.document import DoclingDocument, DocTagsDocument
+from pydantic import BaseModel
 from PyPDF2 import PdfReader, PdfWriter
 
-from metadata_extraction_demo.converters.base import Converter
-from metadata_extraction_demo.converters.utils import convert_pdf_to_images
+from metadata_extraction_demo.utils import convert_pdf_to_images
 
 
-class DoclingServerConverter(Converter):
+class PseudoConversionResult(BaseModel):
+    """Pseudo-class to imitate ConversionResult."""
+
+    document: DoclingDocument
+    status: ConversionStatus = ConversionStatus.SUCCESS
+
+
+class DoclingServerConverter(DocumentConverter):
     """Docling converter using docling-serve server."""
 
     def __init__(self, base_url: str, api_key: str = None, addtl_ocr_options={}):
@@ -19,7 +28,7 @@ class DoclingServerConverter(Converter):
         self.api_key = api_key
         self.addtl_ocr_options = addtl_ocr_options
 
-    def convert_to_docling(self, path: Path) -> DocTagsDocument:
+    def convert(self, path: Path, **kwargs) -> DoclingDocument:
         """Convert a PDF to markdown using the Docling server."""
         # Convert file to bytes
         pdf_obj = open(path, "rb")
@@ -57,21 +66,10 @@ class DoclingServerConverter(Converter):
         doctags_doc = DocTagsDocument.from_doctags_and_image_pairs(all_doctags, images)
 
         # Create a docling document
-        docling = DoclingDocument(name="SampleDocument")
+        docling = DoclingDocument(name=path.name)
         docling.load_from_doctags(doctags_doc)
 
-        return docling
+        # Create a pseudo conversion result
+        conversion_result = PseudoConversionResult(document=docling)
 
-
-if __name__ == "__main__":
-    from metadata_extraction_demo.constants import DOCLING_API_KEY, DOCLING_BASE_URL
-
-    path = Path("Sample_Contract.pdf")
-    addtl_ocr_options = {"force_ocr": True, "image_export_mode": "placeholder"}
-    converter = DoclingServerConverter(
-        base_url=DOCLING_BASE_URL,
-        api_key=DOCLING_API_KEY,
-        addtl_ocr_options=addtl_ocr_options,
-    )
-    docling = converter.convert_to_docling(path=path)
-    print(docling.export_to_markdown())
+        return conversion_result
