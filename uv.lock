@@ -1298,7 +1298,7 @@ dependencies = [
     { name = "python-dotenv" },
 ]
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 dev = [
     { name = "bump2version" },
     { name = "pytest" },
@@ -1313,27 +1313,22 @@ mac = [
 [package.metadata]
 requires-dist = [
     { name = "accelerate", specifier = ">=1.7.0" },
+    { name = "bump2version", marker = "extra == 'dev'", specifier = ">=1.0.1,<2" },
     { name = "docling", specifier = ">=2.15.1" },
     { name = "gradio", specifier = ">=5.22.0,<6" },
     { name = "gradio-pdf", specifier = ">=0.0.22,<0.0.23" },
+    { name = "mlx-vlm", marker = "extra == 'mac'", specifier = ">=0.1.21,<0.2" },
+    { name = "ocrmac", marker = "extra == 'mac'", specifier = ">=1.0.0,<2" },
     { name = "openai", specifier = ">=1.66.5,<2" },
     { name = "pdf2image", specifier = ">=1.17.0,<2" },
     { name = "pydantic", specifier = ">=2.10.6,<3" },
     { name = "pypdf2", specifier = ">=3.0.1,<4" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = "~=8.1" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0,<5" },
     { name = "python-dotenv", specifier = ">=1.0.1,<2" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.0,<0.12" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "bump2version", specifier = ">=1.0.1,<2" },
-    { name = "pytest", specifier = "~=8.1" },
-    { name = "pytest-cov", specifier = ">=4.0.0,<5" },
-    { name = "ruff", specifier = ">=0.11.0,<0.12" },
-]
-mac = [
-    { name = "mlx-vlm", specifier = ">=0.1.21,<0.2" },
-    { name = "ocrmac", specifier = ">=1.0.0,<2" },
-]
+provides-extras = ["dev", "mac"]
 
 [[package]]
 name = "mlx"

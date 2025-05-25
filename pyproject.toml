@@ -17,7 +17,7 @@ dependencies = [
     "accelerate>=1.7.0",
 ]
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
     "pytest~=8.1",
     "pytest-cov>=4.0.0,<5",
