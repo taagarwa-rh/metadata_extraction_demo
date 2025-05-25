@@ -15,7 +15,6 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
   - [Run the Demo Locally](#run-the-demo-locally)
   - [Run the Demo with Docker/Podman](#run-the-demo-with-dockerpodman)
 
-
 ## Features
 
 **Bring Your Own PDF**
@@ -40,20 +39,21 @@ In order to work on this project, the following tools *must* be installed:
 - [`poetry`](https://python-poetry.org/)
 
 ### Initial Steps
+
 To begin working on this project:
 
 1. Clone the repository to your local system via `git clone`
 2. Change directory to the project `cd metadata_extraction_demo`
 3. Make a copy of `sample.env` and rename it as `.env`
-4. Choose one of the following paths depending on your environment:
+4. Install the project dependencies `uv venv && uv sync`
+   - If running on Mac, you can install optional dependencies for Mac with `uv sync --extra mac`
+5. Choose one of the following paths depending on your environment:
 
 #### Option 1. Entirely Local Setup
 
-1. Install the project dependencies `poetry install --only main`
-   1. If running on Mac, you can install optional dependencies for Mac with `poetry install --only main,mac`
-2. Install [Ollama](https://ollama.com/)
-3. Pull a model, e.g. `ollama pull qwen2.5`
-4. Add/replace the following environment variables in `.env`:
+1. Install [Ollama](https://ollama.com/)
+2. Pull a model, e.g. `ollama pull qwen2.5`
+3. Add/replace the following environment variables in `.env`:
     ```
     OPENAI_BASE_URL="http://localhost:11434/v1"
     OPENAI_API_KEY="NONE"
@@ -61,9 +61,7 @@ To begin working on this project:
 
 #### Option 2. Setup With Remote LLM (vLLM, OpenAI, etc.) and/or Docling Server
 
-1. Install the project dependencies `poetry install --only main`
-   1. If running on Mac, you can install optional dependencies for Mac with `poetry install --only main,mac`
-2. Add/replace the following environment variables in `.env`:
+1. Add/replace the following environment variables in `.env`:
     ```
     # Remote LLM
     OPENAI_BASE_URL="https://your.example-llm-url.com/v1" # Remove if using OpenAI
@@ -79,7 +77,7 @@ To begin working on this project:
 
 To start the demo locally, run:
 ```sh
-poetry run gradio metadata_extraction_demo/app.py
+uv run gradio metadata_extraction_demo/app.py
 ```
 
 You can access the application at [http://localhost:7860](http://localhost:7860).

@@ -1,33 +1,43 @@
-[tool.poetry]
+[project]
 name = "metadata_extraction_demo"
 version = "0.1.0"
 description = ""
+authors = [{ name = "Taylor Agarwal", email = "taagarwa@redhat.com" }]
+requires-python = "~=3.11"
 readme = "README.md"
-authors = ["Taylor Agarwal <taagarwa@redhat.com>"]
-packages = [{include = "metadata_extraction_demo"}]
+dependencies = [
+    "openai>=1.66.5,<2",
+    "pydantic>=2.10.6,<3",
+    "gradio>=5.22.0,<6",
+    "python-dotenv>=1.0.1,<2",
+    "pdf2image>=1.17.0,<2",
+    "gradio-pdf>=0.0.22,<0.0.23",
+    "pypdf2>=3.0.1,<4",
+    "docling>=2.15.1",
+    "accelerate>=1.7.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-openai = "^1.66.5"
-pydantic = "^2.10.6"
-gradio = "^5.22.0"
-python-dotenv = "^1.0.1"
-pdf2image = "^1.17.0"
-docling-core = "^2.25.0"
-docling = "^2.7.0"
-gradio-pdf = "^0.0.22"
-pypdf2 = "^3.0.1"
+[project.optional-dependencies]
+dev = [
+    "pytest~=8.1",
+    "pytest-cov>=4.0.0,<5",
+    "bump2version>=1.0.1,<2",
+    "ruff>=0.11.0,<0.12",
+]
+mac = [
+    "ocrmac>=1.0.0,<2",
+    "mlx-vlm>=0.1.21,<0.2",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1"
-pytest-cov = "^4.0.0"
-bump2version = "^1.0.1"
-ruff = "^0.11.0"
+[tool.hatch.build.targets.sdist]
+include = ["metadata_extraction_demo"]
 
+[tool.hatch.build.targets.wheel]
+include = ["metadata_extraction_demo"]
 
-[tool.poetry.group.mac.dependencies]
-ocrmac = "^1.0.0"
-mlx-vlm = "^0.1.21"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 140
@@ -42,7 +52,3 @@ ignore = [
     "D100", # undocumented-public-module
 ]
 per-file-ignores = { "tests/*" = ["D"] }
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
