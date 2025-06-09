@@ -9,8 +9,8 @@ pre-mr: format lint
 
 # Formats Code
 format:
-    poetry run ruff check --select I --fix metadata_extraction_demo 
-    poetry run ruff format metadata_extraction_demo 
+    uv run ruff check --select I --fix metadata_extraction_demo benchmark
+    uv run ruff format metadata_extraction_demo benchmark
 
 # Tests Code
 # test *options:
@@ -18,7 +18,7 @@ format:
 
 # Lints Code
 lint *options:
-    poetry run ruff check metadata_extraction_demo  {{ options }}
+    uv run ruff check metadata_extraction_demo benchmark  {{ options }}
 
 # Increments the code version
 bump type:

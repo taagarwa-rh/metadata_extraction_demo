@@ -1,0 +1,7 @@
+document_converter:
+  ocr_method: "vlm"
+  force_full_page_ocr: true
+
+llm:
+  model: qwen2.5:7b
+  system_prompt: "Extract the requested info from the content the user provides. Do not elaborate or give unnecessary information. Respond using JSON only."

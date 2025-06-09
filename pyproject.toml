@@ -28,6 +28,9 @@ mac = [
     "ocrmac>=1.0.0,<2",
     "mlx-vlm>=0.1.21,<0.2",
 ]
+benchmark = [
+    "traceloop-sdk>=0.40.7",
+]
 
 [tool.hatch.build.targets.sdist]
 include = ["metadata_extraction_demo"]
