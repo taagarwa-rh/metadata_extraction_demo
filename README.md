@@ -14,6 +14,7 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
       - [Option 2. Setup With Remote LLM (vLLM, OpenAI, etc.) and/or Docling Server](#option-2-setup-with-remote-llm-vllm-openai-etc-andor-docling-server)
   - [Run the Demo Locally](#run-the-demo-locally)
   - [Run the Demo with Docker/Podman](#run-the-demo-with-dockerpodman)
+  - [Acknowledgments](#acknowledgments)
 
 ## Features
 
@@ -102,3 +103,7 @@ _This option requires that you have either [Podman](https://podman.io/) or [Dock
 
 > [!WARNING]  
 > Docling OCR does not perform well on Mac in containers. If you are using Mac, consider running the demo locally, not forcing full page OCR, or using remote Docling instead. See [#1121](https://github.com/docling-project/docling/issues/1121).
+
+## Acknowledgments
+
+The [contract](https://vendornet.wi.gov/Contract.aspx?Id=dfa85fb8-c9d5-ee11-904e-00505684483d) used in the demo is a publicly available PDF provided by Wisconsin State's [VendorNet](https://vendornet.wi.gov/).
