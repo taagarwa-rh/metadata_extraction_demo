@@ -15,7 +15,7 @@ class MetadataExtractionPipeline:
     """Pipeline class for metadata extraction from files."""
 
     def __init__(
-        self, converter: DocumentConverter, model: str, response_format: BaseModel, system_prompt: str = "", client: Client = None
+        self, converter: DocumentConverter, model: str, response_format: BaseModel, system_prompt: str = None, client: Client = None
     ):
         """Initialize."""
         self.converter = converter

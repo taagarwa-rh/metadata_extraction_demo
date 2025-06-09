@@ -60,7 +60,19 @@ def build_local_docling_converter(
             pipeline_options=pipeline_options,
         )
     }
-    converter = DocumentConverter(format_options=format_options, allowed_formats=allowed_formats)
+    converter = DocumentConverter(
+        format_options=format_options,
+        allowed_formats=[
+            InputFormat.PDF,
+            InputFormat.IMAGE,
+            InputFormat.DOCX,
+            InputFormat.HTML,
+            InputFormat.PPTX,
+            InputFormat.ASCIIDOC,
+            InputFormat.CSV,
+            InputFormat.MD,
+        ],
+    )
     return converter
 
 
