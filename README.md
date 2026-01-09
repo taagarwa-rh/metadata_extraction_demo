@@ -19,17 +19,16 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
 ## Features
 
 **Bring Your Own PDF**
-![](./docs/images/upload_pdf.png)
+![Uploading PDF](./docs/images/upload_pdf.png)
 
 **Specify Your Models and Structure**
-![](./docs/images/configuration.png)
+![Configure](./docs/images/configuration.png)
 
 **Get Extracted Markdown and Metadata**
-![](./docs/images/metadata_extractor.png)
+![Extracted View](./docs/images/metadata_extractor.png)
 
 **Compare OCR Methods**
-![](./docs/images/compare_ocr.png)
-
+![Comparison View](./docs/images/compare_ocr.png)
 
 ## Getting Started
 
@@ -37,7 +36,7 @@ Demo showcasing metadata extraction from PDFs using a combination of Docling and
 
 In order to work on this project, the following tools *must* be installed:
 
-- [`poetry`](https://python-poetry.org/)
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### Initial Steps
 
@@ -52,31 +51,34 @@ To begin working on this project:
 
 #### Option 1. Entirely Local Setup
 
-1. Install [Ollama](https://ollama.com/)
-2. Pull a model, e.g. `ollama pull qwen2.5`
+1. Install [Ollama](https://ollama.com/), [vLLM](https://docs.vllm.ai/en/latest/getting_started/installation/), [llama.cpp](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md), or any local OpenAI-compatible server.
+2. Download a model, e.g. `ollama pull qwen2.5`
 3. Add/replace the following environment variables in `.env`:
-    ```
-    OPENAI_BASE_URL="http://localhost:11434/v1"
-    OPENAI_API_KEY="NONE"
-    ```
+
+  ```sh
+  OPENAI_BASE_URL="http://localhost:11434/v1"
+  OPENAI_API_KEY="NONE"
+  ```
 
 #### Option 2. Setup With Remote LLM (vLLM, OpenAI, etc.) and/or Docling Server
 
 1. Add/replace the following environment variables in `.env`:
-    ```
-    # Remote LLM
-    OPENAI_BASE_URL="https://your.example-llm-url.com/v1" # Remove if using OpenAI
-    OPENAI_API_KEY="<KEY>"
-    # OPENAI_IGNORE_SSL=True # Optional: Disable SSL verification for remote server
 
-    # (Optional) Remote Docling Server
-    DOCLING_BASE_URL="https://your.example-docling-url.com"
-    DOCLING_API_KEY="<KEY>"
-    ```
+  ```sh
+  # Remote LLM
+  OPENAI_BASE_URL="https://your.example-llm-url.com/v1" # Remove if using OpenAI
+  OPENAI_API_KEY="<KEY>"
+  # OPENAI_IGNORE_SSL=True # Optional: Disable SSL verification for remote server
+
+  # (Optional) Remote Docling Server
+  DOCLING_BASE_URL="https://your.example-docling-url.com"
+  DOCLING_API_KEY="<KEY>"
+  ```
 
 ## Run the Demo Locally
 
 To start the demo locally, run:
+
 ```sh
 uv run gradio metadata_extraction_demo/app.py
 ```
@@ -86,9 +88,11 @@ Once the application is running, you can see usage instructions on the Instructi
 You can also see this information in [INSTRUCTIONS.md](./INSTRUCTIONS.md).
 
 ## Run the Demo with Docker/Podman
-_This option requires that you have either [Podman](https://podman.io/) or [Docker](https://www.docker.com/) installed on your system._
+
+_This option requires that you have either [Podman](https://podman.io/) or [Docker](https://www.docker.com/) installed on your system.*
 
 1. Run
+
     ```bash
     podman build -t metadata-extraction-demo .
     podman run --rm -d \
@@ -97,9 +101,10 @@ _This option requires that you have either [Podman](https://podman.io/) or [Dock
         --name metadata-extraction-demo \
         -it metadata-extraction-demo
     ```
-  - If you're using Docker, simply replace `podman` with `docker` in the above command.
-  - You can modify the environment variables as needed depending on your deployment configuration.
-  - Access the application at [http://localhost:7860](http://localhost:7860).
+
+- If you're using Docker, simply replace `podman` with `docker` in the above command.
+- You can modify the environment variables as needed depending on your deployment configuration.
+- Access the application at [http://localhost:7860](http://localhost:7860).
 
 > [!WARNING]  
 > Docling OCR does not perform well on Mac in containers. If you are using Mac, consider running the demo locally, not forcing full page OCR, or using remote Docling instead. See [#1121](https://github.com/docling-project/docling/issues/1121).
